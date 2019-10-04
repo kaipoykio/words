@@ -16,6 +16,10 @@ func NewWordbag() *Wordbag {
 	return wb
 }
 
+// Returns a pointer to internal map, for easy range operations.
+func (wb *Wordbag) GetWords() *map[string]int {
+	return &wb.words
+}
 
 func (wb *Wordbag) Once(word string) {
 	if _, ok := wb.words[word]; !ok {
