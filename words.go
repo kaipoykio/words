@@ -3,6 +3,7 @@ package words
 import (
 	"strings"
 	"math"
+	"sort"
 )
 
 type Wordbag struct {
@@ -140,4 +141,50 @@ func (wb *Wordbag) IDF(w string) float64 {
 		return math.Log10(float64(wb.count)/float64(c))
 	}
 	return 0.0
+}
+
+func (wb *Wordbag) Top(n int) []string {
+	var results []string
+
+	results = make([]string, 0, len(wb.words))
+
+	for k,_ := range wb.words {
+		results = append(results, k)
+	}
+
+	sort.Slice(results, func(i,j int) bool { return wb.words[results[i]] > wb.words[results[j]] } )
+
+	if c := cap(results); n > c {
+		n = c
+	}
+
+	if n == 0 {
+		// all sorted descending
+		return results
+	} else {
+		return results[0:n]
+	}
+}
+
+func (wb *Wordbag) Last(n int) []string {
+	var results []string
+
+	results = make([]string, 0, len(wb.words))
+
+	for k,_ := range wb.words {
+		results = append(results, k)
+	}
+
+	sort.Slice(results, func(i,j int) bool { return wb.words[results[i]] < wb.words[results[j]] } )
+
+	if c := cap(results); n > c {
+		n = c
+	}
+
+	if n == 0 {
+		// all sorted ascending
+		return results
+	} else {
+		return results[0:n]
+	}
 }
