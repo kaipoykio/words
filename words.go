@@ -114,6 +114,11 @@ func (wb *Wordbag) Clear() {
 	wb.count = 0
 }
 
+func (wb *Wordbag) TotalWords() int {
+	return len(wb.words)
+}
+
+
 func (wb *Wordbag) WordCount(w string) int {
 	if c, ok := wb.words[w]; ok {
 		return c
