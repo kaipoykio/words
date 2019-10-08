@@ -148,6 +148,20 @@ func (wb *Wordbag) IDF(w string) float64 {
 	return 0.0
 }
 
+// corpus should be a count of all terms from all documents...
+func (wb *Wordbag) Chi2(corpus *Wordbag) float64 {
+	var chi float64 = 0.0
+
+	for w, _ := range wb.words {
+		E := corpus.TF(w)
+		O := wb.TF(w)
+
+		chi += math.Pow(O-E, 2)/E
+	}
+
+	return chi
+}
+
 func (wb *Wordbag) Top(n int) []string {
 	var results []string
 
