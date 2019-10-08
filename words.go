@@ -161,6 +161,49 @@ func (wb *Wordbag) Chi2(corpus *Wordbag) float64 {
 	return chi
 }
 
+type HistogramElement struct {
+	wordcount int // words with the same wordcount are grouped together
+	count int
+}
+
+func (h *HistogramElement) GetWordcount() int {
+	return h.wordcount
+}
+
+func (h *HistogramElement) GetCount() int {
+	return h.count
+}
+
+func NewHistogramElement(k,c int) *HistogramElement {
+	var he *HistogramElement = new(HistogramElement)
+	he.wordcount = k
+	he.count = c
+	return he
+}
+
+func (wb *Wordbag) GetHistogram() []*HistogramElement {
+	var results []*HistogramElement
+	var hist map[int]int = make(map[int]int)
+
+	for _, c := range wb.words {
+		if _, ok := hist[c]; ok {
+			hist[c]++
+		} else {
+			hist[c] = 1
+		}
+	}
+
+	results = make([]*HistogramElement, 0, len(hist))
+
+	for k,v := range hist {
+		results = append(results, NewHistogramElement(k,v))
+	}
+
+	sort.Slice(results, func(i,j int) bool { return (*results[i]).wordcount < (*results[j]).wordcount } )
+
+	return results
+}
+
 func (wb *Wordbag) Top(n int) []string {
 	var results []string
 
