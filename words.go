@@ -181,6 +181,7 @@ func (wb *Wordbag) IDF(w string) float64 {
 }
 
 // corpus should be a count of all terms from all documents
+/* removed temporarily...
 func (wb *Wordbag) Chi2(corpus *Wordbag) float64 {
 	var chi float64 = 0.0
 
@@ -192,6 +193,7 @@ func (wb *Wordbag) Chi2(corpus *Wordbag) float64 {
 
 	return chi
 }
+*/
 
 type HistogramElement struct {
 	wordcount int // words with the same wordcount are grouped together
