@@ -65,7 +65,7 @@ func (wb *Wordbag) Textract (text string) {
 	}
 }
 
-// reduce = function to discard string
+// reducer = function to discard string
 // mapper = function to convert string
 func (wb *Wordbag) TextractMapReduce (text string, mapper func(s string) string, reducer func(s string) bool) {
 	words := strings.Split(text, " ")
@@ -83,7 +83,7 @@ func (wb *Wordbag) OnceTextract (text string) {
 	}
 }
 
-// reduce = function to discard string
+// reducer = function to discard string
 // mapper = function to convert string
 func (wb *Wordbag) OnceTextractMapReduce (text string, mapper func(s string) string, reducer func(s string) bool) {
 	words := strings.Split(text, " ")
@@ -104,7 +104,7 @@ func (wb *Wordbag) OccurencesTextract (text string) {
 	wb.OccurencesAdd(wordb)
 }
 
-// reduce = function to discard string
+// reducer = function to discard string
 // mapper = function to convert string
 func (wb *Wordbag) OccurencesTextractMapReduce (text string, mapper func(s string) string, reducer func(s string) bool) {
 
@@ -236,6 +236,7 @@ func (wb *Wordbag) GetHistogram() []*HistogramElement {
 	return results
 }
 
+// sorted descending
 func (wb *Wordbag) Top(n int) []string {
 	var results []string
 
@@ -252,13 +253,14 @@ func (wb *Wordbag) Top(n int) []string {
 	}
 
 	if n == 0 {
-		// all sorted descending
+		// all
 		return results
 	} else {
 		return results[0:n]
 	}
 }
 
+// sorted ascending
 func (wb *Wordbag) Last(n int) []string {
 	var results []string
 
@@ -275,7 +277,7 @@ func (wb *Wordbag) Last(n int) []string {
 	}
 
 	if n == 0 {
-		// all sorted ascending
+		// all
 		return results
 	} else {
 		return results[0:n]
