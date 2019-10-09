@@ -61,17 +61,38 @@ func (wb *Wordbag) Sub(word string, count int) {
 func (wb *Wordbag) Textract (text string) {
 	words := strings.Split(text, " ")
 	for _, word := range words {
-		wb.Add(word, 1) // filter & normalise words with supplied function ?
+		wb.Add(word, 1)
+	}
+}
+
+// reduce = function to discard string
+// mapper = function to convert string
+func (wb *Wordbag) TextractMapReduce (text string, mapper func(s string) string, reducer func(s string) bool) {
+	words := strings.Split(text, " ")
+	for _, word := range words {
+		if !reducer(word) {
+			wb.Add(mapper(word), 1)
+		}
 	}
 }
 
 func (wb *Wordbag) OnceTextract (text string) {
 	words := strings.Split(text, " ")
 	for _, word := range words {
-		wb.Once(word) // filter & normalise words with supplied function ?
+		wb.Once(word)
 	}
 }
 
+// reduce = function to discard string
+// mapper = function to convert string
+func (wb *Wordbag) OnceTextractMapReduce (text string, mapper func(s string) string, reducer func(s string) bool) {
+	words := strings.Split(text, " ")
+	for _, word := range words {
+		if !reducer(word) {
+			wb.Once(mapper(word))
+		}
+	}
+}
 
 // just a convenience function...
 func (wb *Wordbag) OccurencesTextract (text string) {
@@ -79,6 +100,17 @@ func (wb *Wordbag) OccurencesTextract (text string) {
 	var wordb *Wordbag = NewWordbag()
 
 	wordb.OnceTextract(text)
+
+	wb.OccurencesAdd(wordb)
+}
+
+// reduce = function to discard string
+// mapper = function to convert string
+func (wb *Wordbag) OccurencesTextractMapReduce (text string, mapper func(s string) string, reducer func(s string) bool) {
+
+	var wordb *Wordbag = NewWordbag()
+
+	wordb.OnceTextractMapReduce(text, mapper, reducer)
 
 	wb.OccurencesAdd(wordb)
 }
